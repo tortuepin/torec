@@ -6,12 +6,15 @@ import datetime
 import glob
 import fire
 from time import sleep
+import tty
+import termios
 
 class Torec:
 
     def __init__(self):
         self.type = 'mp3'
-        self.save_dir = self.__get_save_dir()
+        #self.save_dir = self.__get_save_dir()
+        self.save_dir = '/Users/tortuepin/develop/torec/'
 
     def __start_rec(self, filename):
         # 録音をスタート
@@ -83,7 +86,7 @@ class Torec:
         print("\n------recording-------")
         print("stop recording <Enter>")
         p = self.__start_rec(filename)
-        input()
+        sys.stdin.read(1)
         self.__stop(p)
         print("-------stop recording-------")
         self.__print_choices()
@@ -93,7 +96,7 @@ class Torec:
         print("\n------playing------")
         print("stop playing <Enter>")
         p = self.__start_play(filename)
-        input()
+        sys.stdin.read(1)
         self.__stop(p)
         print("-------stop playing-------")
         self.__print_choices()
@@ -101,7 +104,7 @@ class Torec:
     def __call_del(self, filename):
         print("Delete", os.path.basename(filename))
         print("OK?(y/n)")
-        i = input()
+        i = sys.stdin.read(1)
         if i in ['y', 'Y']:
             os.remove(filename)
             print("Deleted", os.path.basename(filename))
@@ -114,7 +117,7 @@ class Torec:
         print("Type <Enter> to start recording")
 
         while(True):
-            i = input()
+            i = sys.stdin.read(1)
             if 'f' in locals() and i == 'r':
                 self.__call_play(f)
                 continue
@@ -133,5 +136,14 @@ class Torec:
 
 
 if __name__ == '__main__':
+    #標準入力のファイルディスクプリタを取得
+    fd = sys.stdin.fileno()
+
+    #fdの端末属性をゲットする
+    old = termios.tcgetattr(fd)
+    tty.setcbreak(sys.stdin.fileno())
+
     torec = Torec()
     fire.Fire(torec.start)
+
+    termios.tcsetattr(fd, termios.TCSANOW, old)
