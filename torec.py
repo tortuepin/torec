@@ -80,6 +80,7 @@ class Torec:
         print("replay : Type 'r' key")
         print("delete : Type 'd' key")
         print("finish : Type 'c' key")
+        print("If you Type <Space>, alternate recording and play")
     
     def __call_rec(self, practice_name):
         filename = self.__gen_name(practice_name)
@@ -114,12 +115,14 @@ class Torec:
             return False
 
     def start(self, practice_name):
+        play_flag = 0
         print("Type <Enter> to start recording")
 
         while(True):
             i = sys.stdin.read(1)
             if 'f' in locals() and i == 'r':
                 self.__call_play(f)
+                play_flag = 1
                 continue
             elif 'f' in locals() and i == 'd':
                 if self.__call_del(f):
@@ -128,10 +131,16 @@ class Torec:
                 else:
                     self.__print_choices()
                 continue
+            elif 'f' in locals() and i == ' ':
+                # スペースが入力されたときはplayとrecを交互に
+                if play_flag == 0:
+                    self.__call_play(f)
+                    play_flag = 1
             elif i == 'c':
                 sys.exit()
 
             f = self.__call_rec(practice_name)
+            play_flag = 0
 
 
 
