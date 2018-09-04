@@ -87,7 +87,7 @@ class Torec:
         print("\n------recording-------")
         print("stop recording <Enter>")
         p = self.__start_rec(filename)
-        sys.stdin.read(1)
+        i = sys.stdin.read(1)
         self.__stop(p)
         print("-------stop recording-------")
         self.__print_choices()
@@ -136,6 +136,7 @@ class Torec:
                 if play_flag == 0:
                     self.__call_play(f)
                     play_flag = 1
+                    continue
             elif i == 'c':
                 sys.exit()
 
