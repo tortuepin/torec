@@ -13,8 +13,8 @@ class Torec:
 
     def __init__(self):
         self.type = 'mp3'
-        #self.save_dir = self.__get_save_dir()
-        self.save_dir = '/Users/tortuepin/develop/torec/'
+        self.save_dir = self.__get_save_dir()
+        #self.save_dir = '/Users/tortuepin/develop/torec/'
 
     def __start_rec(self, filename):
         # 録音をスタート
